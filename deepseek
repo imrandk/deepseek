@@ -1,0 +1,31 @@
+(function setupPasteFunctionality() {
+    const createPasteButton = (text, top) => {
+        const button = document.createElement('button');
+        button.textContent = text;
+        Object.assign(button.style, {
+            position: 'fixed', top, left: '100px', zIndex: '9999', 
+            backgroundColor: '#28a745', color: 'white', padding: '20px 50px', 
+            border: 'none', borderRadius: '20px', cursor: 'pointer'
+        });
+        document.body.appendChild(button);
+
+        button.addEventListener('click', async () => {
+            try {
+                const clipboardText = await navigator.clipboard.readText();
+                const inputElement = document.getElementById('chat-input');
+                if (inputElement) {
+                    inputElement.focus();
+                    inputElement.setRangeText(clipboardText, inputElement.selectionStart, inputElement.selectionEnd, 'end');
+                    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+                    inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+
+                    setTimeout(() => {
+                        inputElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, code: 'Enter', which: 13, bubbles: true, cancelable: true }));
+                        inputElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, code: 'Enter', which: 13, bubbles: true, cancelable: true }));
+                    }, 100);
+                }
+            } catch (err) {}
+        });
+    };
+    createPasteButton('Paste Clipboard', '20px');
+})();
