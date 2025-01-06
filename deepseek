@@ -3,9 +3,10 @@
         const button = document.createElement('button');
         button.textContent = text;
         Object.assign(button.style, {
-            position: 'fixed', top, left: '100px', zIndex: '9999', 
-            backgroundColor: '#28a745', color: 'white', padding: '20px 50px', 
-            border: 'none', borderRadius: '20px', cursor: 'pointer'
+            position: 'fixed', top: '5px', left: '150px', zIndex: '9999', 
+            backgroundColor: '#28a745', color: 'white', padding: '40px 150px', 
+            border: 'none', borderRadius: '20px', cursor: 'pointer',
+            transition: 'all 0.3s ease', // Smooth transition for background color
         });
         document.body.appendChild(button);
 
@@ -24,7 +25,26 @@
                         inputElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, code: 'Enter', which: 13, bubbles: true, cancelable: true }));
                     }, 100);
                 }
-            } catch (err) {}
+
+                // Change button style to indicate success (white color)
+                button.style.backgroundColor = 'white';
+                button.style.color = '#28a745';
+                button.textContent = '✔️';
+                
+                // Increase the size of the checkmark with animation
+                button.style.transition = 'font-size 0.3s ease'; // Smooth animation for font size
+                button.style.fontSize = '35px'; // Slightly larger checkmark
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    button.style.backgroundColor = '#28a745';
+                    button.style.color = 'white';
+                    button.textContent = text;
+                    button.style.fontSize = 'inherit'; // Reset to original size
+                }, 2000);
+            } catch (err) {
+                // Handle any errors (e.g., clipboard access issue)
+            }
         });
     };
     createPasteButton('Paste Clipboard', '20px');
