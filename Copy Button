@@ -1,0 +1,51 @@
+(function setupPasteFunctionality() {
+    const createPasteButton = (text) => {
+        const button = document.createElement('button');
+        button.textContent = text;
+
+        // Original button background color
+        const originalColor = '#28a745'; // Green color
+
+        // Adding styles to ensure button visibility
+        Object.assign(button.style, {
+            position: 'fixed',     // Fixed positioning
+            top: '400px',          // Hardcoded top value
+            left: '120px',         // Button placed 120px from the left
+            zIndex: '9999',        // Make sure button is on top
+            backgroundColor: originalColor,  // Button background color (green)
+            color: 'white',        // Button text color
+            padding: '60px 180px', // Padding inside the button
+            border: 'none',        // Remove border
+            borderRadius: '20px',  // Rounded corners
+            cursor: 'pointer',     // Pointer cursor on hover
+        });
+
+        // Ensure button is added to the page
+        document.body.appendChild(button);
+
+        // Add click functionality
+        button.addEventListener('click', () => {
+            // Find all buttons with the class `ds-markdown-code-copy-button`
+            const buttons = document.querySelectorAll('div.ds-markdown-code-copy-button');
+
+            if (buttons.length > 0) {
+                // Get the last button in the list
+                const lastButton = buttons[buttons.length - 1];
+                lastButton.click(); // Trigger the click action
+
+                // Change the background color of the custom button to white
+                button.style.backgroundColor = 'white';
+                button.style.color = 'black'; // Change text color to black for contrast
+
+                // After 2 seconds, revert the button back to the original green color
+                setTimeout(() => {
+                    button.style.backgroundColor = originalColor;
+                    button.style.color = 'white'; // Revert text color back to white
+                }, 2000); // 2 seconds (2000ms)
+            }
+        });
+    };
+
+    // Create a button with the text 'Copy Me'
+    createPasteButton('Copy Me');
+})();
