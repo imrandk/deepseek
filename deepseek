@@ -3,8 +3,8 @@
         const button = document.createElement('button');
         button.textContent = text;
         Object.assign(button.style, {
-            position: 'fixed', top: '5px', left: '150px', zIndex: '9999', 
-            backgroundColor: '#28a745', color: 'white', padding: '40px 150px', 
+            position: 'fixed', top: '200px', left: '120px', zIndex: '9999', 
+            backgroundColor: '#28a745', color: 'white', padding: '60px 160px', 
             border: 'none', borderRadius: '20px', cursor: 'pointer',
             transition: 'all 0.3s ease', // Smooth transition for background color
         });
