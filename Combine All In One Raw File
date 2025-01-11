@@ -1,0 +1,52 @@
+(() => {
+    const createButton = (text, top, width, height, action) => {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        Object.assign(btn.style, {
+            position: 'fixed', top, left: '120px', zIndex: '9999', backgroundColor: '#28a745',
+            color: 'white', padding: `${height} ${width}`, border: 'none', borderRadius: '20px', cursor: 'pointer',
+        });
+        document.body.appendChild(btn);
+
+        btn.addEventListener('click', async () => {
+            try {
+                if (action === 'paste') {
+                    const input = document.getElementById('chat-input');
+                    if (input) {
+                        input.focus();
+                        input.setRangeText(await navigator.clipboard.readText(), input.selectionStart, input.selectionEnd, 'end');
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                        setTimeout(() => {
+                            input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true }));
+                            input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, bubbles: true }));
+                        }, 100);
+                    }
+                } else if (action === 'copy') {
+                    const copyBtns = document.querySelectorAll('div.ds-markdown-code-copy-button');
+                    if (copyBtns.length) copyBtns[copyBtns.length - 1].click();
+                }
+
+                // Change button style to indicate success (no animation)
+                btn.style.backgroundColor = 'white';
+                btn.style.color = action === 'paste' ? '#28a745' : 'black';
+                btn.textContent = '✔️';
+
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    btn.style.backgroundColor = '#28a745';
+                    btn.style.color = 'white';
+                    btn.textContent = text;
+                }, 2000);
+            } catch (err) {
+                console.error('Error:', err);
+            }
+        });
+    };
+
+    // Create "Paste Clipboard" button with original size (60px height, 160px width)
+    createButton('Paste Clipboard', '200px', '160px', '60px', 'paste');
+
+    // Create "Copy Me" button with original size (60px height, 180px width)
+    createButton('Copy Me', '400px', '180px', '60px', 'copy');
+})();
